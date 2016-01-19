@@ -79,13 +79,14 @@ def takeQuiz(data):
     questions = getQuestions(data)
     possible = len(questions)
     correct = 0
+    current = 1
     print("You will be asked a total of {} questions".format(possible))
     while(len(questions) > 0):
         q = random.choice(list(questions))
         actual_a = questions.pop(q)
         _actual_a = [rmWS(a).lower() for a in actual_a]
         while True:
-            user_a = rmWS(input("{}: ".format(q))).lower()
+            user_a = rmWS(input("{}. {}: ".format(current, q))).lower()
             if not user_a:
                 if len(actual_a) == 1:
                     print("The correct answer was {}\n".format(actual_a[0]))
@@ -102,6 +103,7 @@ def takeQuiz(data):
                 break
             else:
                 print("Try again...\n")
+        current += 1
 
     print("You got {} out of {} questions correct".format(correct, possible))
     return (correct, possible)
