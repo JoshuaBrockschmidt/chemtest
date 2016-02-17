@@ -76,56 +76,62 @@ def getQuestions(data):
     return questions
     
 def takeQuiz(data):
-    questions = getQuestions(data)
-    possible = len(questions)
-    correct = 0
-    current = 1
-    print("You will be asked a total of {} questions".format(possible))
-    while(len(questions) > 0):
-        q = random.choice(list(questions))
-        actual_a = questions.pop(q)
-        _actual_a = [rmWS(a).lower() for a in actual_a]
-        while True:
-            user_a = rmWS(input("{}. {}: ".format(current, q))).lower()
-            if not user_a:
-                if len(actual_a) == 1:
-                    print("The correct answer was {}\n".format(actual_a[0]))
-                else:
-                    answers = ''
-                    for a in actual_a[:-1]:
-                        answers = "{}{}, ".format(answers, a)
-                    answers = "{}and {}".format(answers, actual_a[-1])
-                    print("The correct answers were {}\n".format(answers))
-                break
-            elif user_a in _actual_a:
-                print("Correct!\n")
-                correct += 1
-                break
-            else:
-                print("Try again...\n")
-        current += 1
+    try:
+         questions = getQuestions(data)
+         possible = len(questions)
+         correct = 0
+         current = 1
+         print("You will be asked a total of {} questions".format(possible))
+         while(len(questions) > 0):
+             q = random.choice(list(questions))
+             actual_a = questions.pop(q)
+             _actual_a = [rmWS(a).lower() for a in actual_a]
+             while True:
+                 user_a = rmWS(input("{}. {}: ".format(current, q))).lower()
+                 if not user_a:
+                     if len(actual_a) == 1:
+                         print("The correct answer was {}\n".format(actual_a[0]))
+                     else:
+                         answers = ''
+                         for a in actual_a[:-1]:
+                             answers = "{}{}, ".format(answers, a)
+                         answers = "{}and {}".format(answers, actual_a[-1])
+                         print("The correct answers were {}\n".format(answers))
+                     break
+                 elif user_a in _actual_a:
+                     print("Correct!\n")
+                     correct += 1
+                     break
+                 else:
+                     print("Try again...\n")
+             current += 1
+    except KeyboardInterrupt:
+        print("\n\nEnding quiz prematurely...\n")
 
     print("You got {} out of {} questions correct".format(correct, possible))
     return (correct, possible)
 
 def startUI():
-    while True:
-        print("Available quizzes:")
-        print("  (e)lements")
-        print("  (i)ons")
-        quiz = input("Which quiz would you like to take? (q to quit): ").lower()
-        if quiz == 'q' or quiz == 'quit':
-            print("Quitting...")
-            break
-        if quiz == 'e' or quiz == 'elements':
-            print("Taking elements quiz...\n")
-            takeQuiz(elems)
-            print()
-        elif quiz == 'i' or quiz == 'ions':
-            takeQuiz(ions)
-            print()
-        else:
-            print("Quiz does not exist...\n")
+    try:
+        while True:
+            print("Available quizzes:")
+            print("  (e)lements")
+            print("  (i)ons")
+            quiz = input("Which quiz would you like to take? (q to quit): ").lower()
+            if quiz == 'q' or quiz == 'quit':
+                print("Quitting...")
+                break
+            if quiz == 'e' or quiz == 'elements':
+                print("Taking elements quiz...\n")
+                takeQuiz(elems)
+                print()
+            elif quiz == 'i' or quiz == 'ions':
+                takeQuiz(ions)
+                print()
+            else:
+                print("Quiz does not exist...\n")
+    except KeyboardInterrupt:
+        print("\nQuitting...")
 
 random.seed(time.time())
 initVars()
